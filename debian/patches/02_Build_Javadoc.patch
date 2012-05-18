@@ -1,0 +1,13 @@
+Index: libbsf-java-2.4.0/build.xml
+===================================================================
+--- libbsf-java-2.4.0.orig/build.xml	2006-10-06 17:53:00.000000000 +0200
++++ libbsf-java-2.4.0/build.xml	2009-07-30 19:03:21.000000000 +0200
+@@ -267,7 +267,7 @@
+ 	<target name="javadocs" description="Generates the API documentation." depends="compile">
+ 		<mkdir dir="${build.javadocs}" />
+ 		<!-- FIXME: Excluding some packages temporarily -->
+-		<javadoc packagenames="${packages}" failonerror="true" excludepackagenames="org.apache.bsf.engines.java, org.apache.bsf.engines.javaclass" destdir="${build.javadocs}" author="true" version="false" use="true" windowtitle="${project.fullName} API" doctitle="${project.fullName}" source="${source.level}">
++		<javadoc packagenames="${packages}" failonerror="true" excludepackagenames="org.apache.bsf.engines.java, org.apache.bsf.engines.javaclass, org.apache.bsf.engines.netrexx, org.apache.bsf.engines.jacl, org.apache.bsf.test, org.apache.bsf.test.engineTests, org.apache.bsf.test.utilTests" destdir="${build.javadocs}" author="true" version="false" use="true" windowtitle="${project.fullName} API" doctitle="${project.fullName}" source="${source.level}">
+ 			<classpath refid="compile.classpath" />
+ 			<fileset dir="${src.dir}">
+ 				<patternset refid="java.source.files"></patternset>

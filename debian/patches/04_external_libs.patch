@@ -1,0 +1,61 @@
+diff -ru libbsf-java-2.4.0.debian/build.xml libbsf-java-2.4.0.new/build.xml
+--- libbsf-java-2.4.0.orig/build.xml	2010-10-28 14:16:36.697889355 +0100
++++ libbsf-java-2.4.0/build.xml	2010-10-28 14:11:49.987052496 +0100
+@@ -88,10 +88,23 @@
+ 		<include name="**/test/**" if="junit.present" />
+ 	</patternset>
+ 
++	<path id="lib.classpath">
++		<fileset dir="${os.jar.dir}">
++			<include name="commons-logging.jar"/>
++			<!-- JACL not packaged by debian -->
++			<!-- Jython support broken for >=2.5 -->
++			<!--<include name="jython.jar"/>-->
++			<!-- NetRexx not packaged by debian -->
++			<include name="js.jar"/>
++			<include name="xalan2.jar"/>
++		</fileset>
++	</path>
++
+ 	<path id="compile.classpath">
+ 		<fileset dir="lib">
+ 			<include name="*.jar" />
+ 		</fileset>
++		<path refid="lib.classpath"/>
+ 		<pathelement location="${build.dest}" />
+ 	</path>
+ 
+@@ -120,15 +133,15 @@
+ 		<!-- ================================================================= -->
+ 		<!-- Determines what optional components are available                 -->
+ 		<!-- ================================================================= -->
+-		<available property="jacl.present" classname="tcl.lang.JACL" />
++		<available property="jacl.present" classname="tcl.lang.JACL" classpathref="lib.classpath" />
+ 
+-		<available property="jython.present" classname="org.python.util.jython" />
++		<available property="jython.present" classname="org.python.util.jython" classpathref="lib.classpath" />
+ 
+-		<available property="netrexx.present" classname="netrexx.lang.Rexx" />
++		<available property="netrexx.present" classname="netrexx.lang.Rexx" classpathref="lib.classpath" />
+ 
+-		<available property="rhino.present" classname="org.mozilla.javascript.Scriptable" />
++		<available property="rhino.present" classname="org.mozilla.javascript.Scriptable" classpathref="lib.classpath" />
+ 
+-		<available property="xalan.present" classname="org.apache.xalan.xslt.EnvironmentCheck" />
++		<available property="xalan.present" classname="org.apache.xalan.xslt.EnvironmentCheck" classpathref="lib.classpath" />
+ 
+ 		<available property="junit.present" classname="junit.framework.TestCase" />
+ 
+@@ -212,11 +225,7 @@
+ 	<target name="compile" description="Compiles the BSF *.java files." depends="prepare">
+ 		<mkdir dir="${build.dest}"/>
+ 		<javac srcdir="${src.dir}" destdir="${build.dest}" debug="${project.debug}" deprecation="${project.deprecation}" source="${source.level}">
+-			<classpath>
+-				<fileset dir="lib">
+-					<include name="*.jar"/>
+-				</fileset>
+-			</classpath>
++			<classpath refid="compile.classpath"/>
+ 			<patternset refid="java.source.files"/>
+ 		</javac>
+ 	</target>

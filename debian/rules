@@ -1,0 +1,31 @@
+#!/usr/bin/make -f
+# debian/rules file for libbsf-java (uses cdbs)
+
+include /usr/share/cdbs/1/rules/debhelper.mk
+include /usr/share/cdbs/1/class/ant.mk
+
+JAVA_HOME := /usr/lib/jvm/default-java
+ANT_HOME  := /usr/share/ant
+
+# disable jython support because it is broken for jython >= 2.5
+#DEB_JARS := xalan2 jython js ${ANT_HOME}/lib/ant-junit.jar junit commons-logging
+DEB_JARS := xalan2 js ${ANT_HOME}/lib/ant-junit.jar junit commons-logging
+MAVEN_REPO := http://repo1.maven.org/maven2
+
+DEB_ANT_BUILD_TARGET := jar javadocs
+#DEB_ANT_CHECK_TARGET := test
+
+clean::
+	$(RM) -r build lib
+	mh_clean
+
+makebuilddir::
+	mkdir -p lib
+
+install/libbsf-java::
+	mh_installpoms -plibbsf-java
+	mh_installjar -plibbsf-java -l -e$(DEB_UPSTREAM_VERSION) debian/bsf.pom lib/bsf.jar
+
+get-orig-pom:
+	wget  -U NoSuchBrowser/1.0 -O debian/bsf.pom \
+		$(MAVEN_REPO)/bsf/bsf/$(DEB_UPSTREAM_VERSION)/bsf-$(DEB_UPSTREAM_VERSION).pom
